@@ -1,0 +1,25 @@
+
+
+ol {
+    cursor: pointer;
+    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: solid black 5px;
+    
+}
+
+ol li {
+    list-style-type: none;
+  
+}
+
+
+ .divOne {
+    background-color: rgb(164, 164, 190);
+ }
+
+ .divTwo {
+    background-color: rgb(183, 207, 190);
+ }

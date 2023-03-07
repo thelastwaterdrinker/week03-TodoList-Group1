@@ -5,10 +5,16 @@ const orderedList = document.getElementById('orderedList');
 
 let newBullet = '';
 
-//in case of change, get the value of the new event in the targeted area
-submit.addEventListener('change', (e)=> {
-    newBullet = e.target.value;
-});
+// Preventing form submission when input field is empty
+function empty() {
+    var x;
+    x = document.getElementById("submit").value;
+    if (x == "") {
+        alert("Type in something");
+        return false;
+    };
+}
+
 
 //creating the handleSubmit function that is used at the end.
 const handleSubmit = (e)=> {
@@ -18,19 +24,26 @@ const handleSubmit = (e)=> {
     const addBulletToList = document.createElement('li');
     addBulletToList.innerText = newBullet;
     orderedList.appendChild(addBulletToList);
+    //clean the submit area after submitting the last list item
+    submit.value = '';
 
     //checkbox 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.value = 1; 
-    checkbox.name = 'Todo';
-    list.appendChild(checkbox);
-    ul.appendChild(list);
+    checkbox.name = 'Todo[]';
+    orderedList.appendChild(checkbox);
+    //ul.appendChild(list);
 
-    //clean the submit area after submitting the last list item
-    submit.value = '';
 }
 
+//in case of change, get the value of the new event in the targeted area
+submit.addEventListener('change', (e)=> {
+    newBullet = e.target.value;
+});
+
 form.addEventListener('submit', handleSubmit);
+
+
 
 
