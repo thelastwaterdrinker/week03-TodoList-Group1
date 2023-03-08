@@ -1,36 +1,60 @@
-const form = document.getElementById('form');
-const list = document.getElementById('list');
-const submit = document.getElementById('submit');
-const orderedList = document.getElementById('orderedList');
+const form = document.getElementById('form-content');
+const add_task_btn = document.getElementById('add_task_btn');
 
-let newBullet = '';
+add_task_btn.onclick = (e) => {
 
-//in case of change, get the value of the new event in the targeted area
-submit.addEventListener('change', (e)=> {
-    newBullet = e.target.value;
-});
-
-//creating the handleSubmit function that is used at the end.
-const handleSubmit = (e)=> {
+    //prevent refresh
     e.preventDefault();
 
-    //add the new list item to ordered list
-    const addBulletToList = document.createElement('li');
-    addBulletToList.innerText = newBullet;
-    orderedList.appendChild(addBulletToList);
+    const newTask = document.getElementById('newTask');
 
-    //checkbox 
+    //create div
+    const div = document.createElement('div');
+    div.style.backgroundColor = 'blue';
+    div.style.width = '200px';
+    div.style.height = '30px';
+    div.style.display = 'flex';
+    div.style.flexDirection = 'row';
+    form.append(div);
+
+    //create checkbox
     const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = 1; 
-    checkbox.name = 'Todo';
-    list.appendChild(checkbox);
-    ul.appendChild(list);
+    checkbox.setAttribute('type', 'checkbox');
+    checkbox.setAttribute('value', 'checkbox');
+    div.append(checkbox);
 
-    //clean the submit area after submitting the last list item
-    submit.value = '';
+    //add span
+    const span = document.createElement('span');
+    span.innerHTML = newTask.value;
+    div.append(span);
+
+    //add edit button
+    const editBtn = document.createElement('button');
+    editBtn.innerHTML = `<i class="fas fa-edit"></i>`;
+    editBtn.classList.add("edit-btn");
+    div.append(editBtn);
+
+    //add delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerHTML = `<i class="fas fa-trash"></i>`;
+    deleteBtn.classList.add("delete-btn");
+    div.append(deleteBtn);
+
+    // delete and edit functions ----it does not work,
+    // it is switching between edit and save from the edit icon - working
+    editBtn.addEventListener('click', (e) => {
+        if (editBtn.innerText.toLowerCase() == "edit") {
+            editBtn.innerText = "Save";
+            checkbox.focus();
+        } else {
+            editBtn.innerText = "Edit";
+        }
+    });
+
+    deleteBtn.addEventListener('click', (e) => {
+        div.removeChild(task_el);
+    });
+
+    //local storage is missing
 }
-
-form.addEventListener('submit', handleSubmit);
-
 
