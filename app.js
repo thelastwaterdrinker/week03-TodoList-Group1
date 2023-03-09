@@ -61,9 +61,15 @@ add_task_btn.onclick = (e) => {
     });
 
     deleteBtn.addEventListener('click', (e) => {
-        div.removeChild(task_el);
+        div.removeChild(deleteBtn);
     });
 
     //local storage is missing
 }
 
+
+
+
+
+
+ 
