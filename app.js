@@ -4,6 +4,11 @@ const newTask = document.getElementById('newTask');
 
 add_task_btn.onclick = (e) => {
 
+    if (newTask.value == ''){
+        alert('Enter a input.')
+        return
+    }
+
     e.preventDefault();
 
     //create div
