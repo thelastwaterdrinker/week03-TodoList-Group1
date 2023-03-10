@@ -29,6 +29,14 @@ function addNewTaskToStorage(title, value) {
 
 function deleteItem(id) {
   const deleteButton = document.getElementById(`delete_task_btn_${id}`);
+  deleteButton.style.backgroundColor = 'Red';
+  deleteButton.style.margin= '0px 5px 0px 5px';
+  deleteButton.style.border = 'none';
+  deleteButton.style.color = 'White';
+  deleteButton.style.display = 'flex';
+  deleteButton.style.padding= '5px 5px 5px 5px';
+  deleteButton.style.borderRadius = '4px';
+  deleteButton.style.fontSize = '16px';
   deleteButton.onclick = () => {
     const tasks = JSON.parse(localStorage.getItem("tasks"));
     tasks.forEach((task, index) => {
@@ -43,8 +51,16 @@ function deleteItem(id) {
 
 function editTitle(id) {
   const editButton = document.getElementById(`edit_task_btn_${id}`);
-  const editInput = document.getElementById(`task_input_id_${id}`)
-  const editLabel = document.getElementById(`task_label_${id}`)
+  editButton.style.backgroundColor = 'Green';
+  editButton.style.margin= '0px 5px 0px 5px';
+  editButton.style.border = 'none';
+  editButton.style.color = 'White';
+  editButton.style.display = 'flex';
+  editButton.style.padding= '5px 5px 5px 5px';
+  editButton.style.borderRadius = '4px';
+  editButton.style.fontSize = '16px';
+  const editInput = document.getElementById(`task_input_id_${id}`);
+  const editLabel = document.getElementById(`task_label_${id}`);
 
   editButton.onclick = () => {
     if (editButton.innerHTML === "edit") {

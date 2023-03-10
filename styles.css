@@ -14,3 +14,50 @@
     display: flex; 
     flex-direction: row
 }
+
+h1 {
+  font-size: 2rem;
+}
+
+h1, #form {
+  min-height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#task_container{
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#form input,
+#form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: none;
+}
+
+.todoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#add_task_btn {
+  background-color: #84c1ea; border-radius: 8px; 
+  color: white; 
+  margin: '0px 5px 0px 5px';
+}
+
+#task-text {
+background-color: #a5b1b9; border-radius: 8px; 
+color: white;
+margin-right: 10px;
+}
+
+
+
+
