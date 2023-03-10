@@ -48,10 +48,13 @@
 
   .delete-btn {
     background-color: red;
+   
+    
   }
 
   .edit-btn {
     background-color: rgb(33, 165, 15);
+  
   }
 
   .delete-btn, .edit-btn {

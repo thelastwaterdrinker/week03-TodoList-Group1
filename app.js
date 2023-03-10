@@ -1,12 +1,10 @@
 const form = document.getElementById('form-content');
 const add_task_btn = document.getElementById('add_task_btn');
+const newTask = document.getElementById('newTask');
 
 add_task_btn.onclick = (e) => {
 
-    //prevent refresh
     e.preventDefault();
-
-    const newTask = document.getElementById('newTask');
 
     //create div
     const div = document.createElement('div');
@@ -21,8 +19,8 @@ add_task_btn.onclick = (e) => {
     //create checkbox
     const checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
-    checkbox.setAttribute('value', 'checkbox');
     checkbox.style.margin = '0px 5px 0px 5px';
+    checkbox.checked= '';
     div.append(checkbox);
 
     //add span
@@ -49,24 +47,65 @@ add_task_btn.onclick = (e) => {
     deleteBtn.style.margin = '0px 15px 0px 0px';
     div.append(deleteBtn);
 
-    // delete and edit functions ----it does not work,
     // it is switching between edit and save from the edit icon - working
     editBtn.addEventListener('click', (e) => {
-        if (editBtn.innerText.toLowerCase() == "edit") {
+        if (editBtn.innerText.toLowerCase() === "edit") {
             editBtn.innerText = "Save";
-            checkbox.focus();
+            let input = document.createElement("input");
+                input.type = "text";
+                input.value = span.innerHTML;
+                span.append(input);
+                input.focus();
+                input.addEventListener("blur", () => {
+                input.innerHTML = span.value;
+                input.remove();
+    });
+            
         } else {
             editBtn.innerText = "Edit";
         }
     });
 
+    
+    // dele button is working now
     deleteBtn.addEventListener('click', (e) => {
         div.removeChild(deleteBtn);
+        div.removeChild(editBtn);
+        div.removeChild(checkbox);
+        div.removeChild(span);
     });
 
-    //local storage is missing
-}
+    // checkbox listener
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+          console.log("Checkbox is checked..");
+        } else {
+          console.log("Checkbox is not checked..");
+        }
+      });
 
+    //local storage is missing
+
+
+    function setStyles() {
+        const currentnewTask = localStorage.getItem('newTask');
+        const currentcheckBox = localStorage.getItem('checkbox');
+      
+        document.getElementById('newTask').value = currentnewTask;
+       
+       
+      }
+
+
+    function populateStorage() {
+        localStorage.setItem('newTask', document.getElementById('newTask').value);
+        localStorage.setItem('checkbox', checkbox.value);
+      
+        setStyles();
+      } as
+      populateStorage()
+
+}
 
 
 
