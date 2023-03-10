@@ -1,114 +1,117 @@
-const form = document.getElementById('form-content');
-const add_task_btn = document.getElementById('add_task_btn');
-const newTask = document.getElementById('newTask');
+const addTaskButton = document.getElementById("add_task_btn");
+addTaskButton.onclick = () => {
 
-add_task_btn.onclick = (e) => {
-
-    e.preventDefault();
-
-    //create div
-    const div = document.createElement('div');
-    div.style.minWidth = '200px';
-    div.style.maxWidth = '400px';
-    div.style.height = '30px';
-    div.style.display = 'flex';
-    div.style.flexDirection = 'row';
-    div.style.margin = '1vh 0vh 1vh 0vh';
-    form.append(div);
-
-    //create checkbox
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    checkbox.style.margin = '0px 5px 0px 5px';
-    checkbox.checked= '';
-    div.append(checkbox);
-
-    //add span
-    const span = document.createElement('span');
-    span.innerHTML = newTask.value;
-    span.style.display = 'flex';
-    span.style.flexDirection = 'column';
-    span.style.minWidth = '20vh';
-    span.style.justifyContent = 'center';
-    span.style.margin = '0px 0px 0px 5px';
-    div.append(span);
-
-    //add edit button
-    const editBtn = document.createElement('button');
-    editBtn.innerHTML = `<i class="fas fa-edit"></i>`;
-    editBtn.classList.add("edit-btn");
-    editBtn.style.margin = '0px 5px 0px 0px';
-    div.append(editBtn);
-
-    //add delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerHTML = `<i class="fas fa-trash"></i>`;
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.style.margin = '0px 15px 0px 0px';
-    div.append(deleteBtn);
-
-    // it is switching between edit and save from the edit icon - working
-    editBtn.addEventListener('click', (e) => {
-        if (editBtn.innerText.toLowerCase() === "edit") {
-            editBtn.innerText = "Save";
-            let input = document.createElement("input");
-                input.type = "text";
-                input.value = span.innerHTML;
-                span.append(input);
-                input.focus();
-                input.addEventListener("blur", () => {
-                input.innerHTML = span.value;
-                input.remove();
-    });
-            
-        } else {
-            editBtn.innerText = "Edit";
-        }
-    });
-
-    
-    // dele button is working now
-    deleteBtn.addEventListener('click', (e) => {
-        div.removeChild(deleteBtn);
-        div.removeChild(editBtn);
-        div.removeChild(checkbox);
-        div.removeChild(span);
-    });
-
-    // checkbox listener
-    checkbox.addEventListener('change', function() {
-        if (checkbox.checked) {
-          console.log("Checkbox is checked..");
-        } else {
-          console.log("Checkbox is not checked..");
-        }
-      });
-
-    //local storage is missing
-
-
-    function setStyles() {
-        const currentnewTask = localStorage.getItem('newTask');
-        const currentcheckBox = localStorage.getItem('checkbox');
-      
-        document.getElementById('newTask').value = currentnewTask;
-       
-       
-      }
-
-
-    function populateStorage() {
-        localStorage.setItem('newTask', document.getElementById('newTask').value);
-        localStorage.setItem('checkbox', checkbox.value);
-      
-        setStyles();
-      } as
-      populateStorage()
-
+  //false: checkbox value
+  const taskName = document.getElementById("task_text").value;
+  addNewTaskToStorage(taskName, false);
+};
+//-----LOCAL STORAGE
+//value: checbox checked or not 
+//title: task label
+function addNewTaskToStorage(title, value) {
+  const tasksFromStorage =
+    JSON.parse(localStorage.getItem("tasks")) || [];
+  //console.log(tasksFromStorage.length);
+  const newTask = {
+    id: 1,
+    title,
+    value,
+  };
+  if (tasksFromStorage.length < 1) {
+    newTask.id = 1;
+  } else {
+    newTask.id = tasksFromStorage[tasksFromStorage.length - 1].id + 1;
+  }
+  tasksFromStorage.push(newTask);
+  localStorage.setItem("tasks", JSON.stringify(tasksFromStorage));
+  renderList();
 }
 
+function deleteItem(id) {
+  const deleteButton = document.getElementById(`delete_task_btn_${id}`);
+  deleteButton.onclick = () => {
+    const tasks = JSON.parse(localStorage.getItem("tasks"));
+    tasks.forEach((task, index) => {
+      if (task.id === id) {
+        tasks.splice(index, 1);
+      }
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderList();
+  };
+}
 
+function editTitle(id) {
+  const editButton = document.getElementById(`edit_task_btn_${id}`);
+  const editInput = document.getElementById(`task_input_id_${id}`)
+  const editLabel = document.getElementById(`task_label_${id}`)
 
+  editButton.onclick = () => {
+    if (editButton.innerHTML === "edit") {
+      editButton.innerHTML = "save";
+      //show input box
+      editInput.style.display = 'flex'
+      //hide label
+      editLabel.style.display = 'none'
+    } else {
+      editButton.innerHTML = "edit";
+      editInput.style.display = 'none'
+      editLabel.style.display = 'flex'
+      updateAndSaveTitle(id)
+    }
+  };
+}
 
+function updateAndSaveTitle(id) {
+  const taskTitle = document.getElementById(`task_input_id_${id}`)
+  const tasks = JSON.parse(localStorage.getItem('tasks'))
+  tasks.forEach(task => {
+      if(task.id === id) {
+          task.title = taskTitle.value
+      }
+  })
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+  renderList()
+}
 
- 
+function updateAndSaveCheckboxValue(id) {
+  const checkboxValue = document.getElementById(`task_id_${id}`)
+  checkboxValue.onchange = (evt) => {
+      //console.log(evt.target.checked)
+      const tasks = JSON.parse(localStorage.getItem('tasks'))
+      tasks.forEach(task => {
+          if(task.id === id) {
+              task.value = evt.target.checked
+          }
+      })
+      localStorage.setItem('tasks', JSON.stringify(tasks))
+  }
+}
+
+function renderList() {
+  const taskContainer = document.getElementById("task_container");
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let renderItem = "";
+  //console.log(tasks);
+  if(tasks.length > 0) {
+    tasks.forEach((task) => {
+      renderItem += `
+        <div class='main_container'>
+            <input type="checkbox" id="task_id_${task.id}" name="task_" ${task.value ? 'checked' : ''}/>
+            <label id="task_label_${task.id}" for="task_${task.id}">${task.title}</label><br />
+            <input style="width: 100px; display: none;" type="text" id="task_input_id_${task.id}" value="${task.title}" />
+            <button id="edit_task_btn_${task.id}">edit</button>
+            <button id="delete_task_btn_${task.id}">delete</button>
+        </div>
+        `;
+    });
+    taskContainer.innerHTML = renderItem;
+
+    tasks.forEach((task) => {
+      deleteItem(task.id);
+      editTitle(task.id);
+      updateAndSaveCheckboxValue(task.id);
+    });
+  }
+}
+renderList();
