@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&family=Heebo&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter;
+}
+
+@layer utilities {
+  .btn_dark_green { 
+    @apply  bg-green-90 px-8 py-4 text-white transition-all hover:bg-black
+  }
+
+  .flexCenter {
+    @apply flex items-center justify-center;
+  }
+  
+  .flexBetween {
+    @apply flex items-center justify-between;
+  }
+
+  .flexStart {
+    @apply flex items-center justify-start;
+  }
+
+  .flexEnd {
+    @apply flex items-center justify-end;
+  }
+}
+
